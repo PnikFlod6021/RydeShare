@@ -1,0 +1,119 @@
+::selection {
+    color: #0c5149;
+    background-color: #09c184;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+a {
+    color: #31285C;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #0d192b;
+    padding-top: 20px;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.wrapper {
+    width: 320px;
+    min-height: 100px;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+}
+
+.input-field {
+    width: 100%;
+    height: 45px;
+    border: none;
+    padding: 10px;
+    background-color: #eeeeee;
+    color: gray;
+    outline: none;
+    font-size: 15px;
+    margin-bottom: 20px;
+    transition: 0.5s;
+    border-radius: 5px;
+}
+
+.input-field:hover {
+}
+
+.heading {
+    color: #09c184;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label {
+    color: #AAA8BB;
+    font-weight: 400;
+}
+
+button {
+    width: 100%;
+    height: 45px;
+    border: none;
+    color: #FFFFFF;
+    background-color: #09c184;
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: 500;
+    padding: 20px;
+    transition: 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button:hover {
+    background-color: #0a8967;
+}
+
+.create-account {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.create-account a {
+    text-decoration: none;
+    color: #31285C;
+    transition: color 0.3s;
+}
+
+.create-account a:hover {
+    color: #09c184;
+}
+
+
+
+
+
+
+
+
+
+
+
+

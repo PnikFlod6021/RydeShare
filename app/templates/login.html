@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/loginpage.css') }}">
 </head>
 <body>
     <div class="wrapper">
         <div class="heading">
-            <h2>Sign Up</h2>
+            <h2>Login</h2>
         </div>
 
-        <form method="post" action="/register">
+        <form method="post" action="/login">
             <div class="input-group">
                 <input type="text" name="username" class="input-field" placeholder="Username" required>
             </div>
@@ -21,11 +22,13 @@
 
 
             <div class="input-group">
-                <button type="submit">Register</button>
+                <button type="submit">Login</button>
             </div>
         </form>
 
-
+        <div class="create-account">
+            <p>Not a user? <a href="/register">Create an account</a></p>
+        </div>
     </div>
 
 
