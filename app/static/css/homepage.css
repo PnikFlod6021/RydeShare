@@ -5,11 +5,12 @@
     font-family: 'Poppins', sans-serif;
     text-decoration: none;
     list-style: none;
+
 }
 
 body {
     min-height: 100vh;
-    background-image: url('https://images.unsplash.com/photo-1476820865390-c52aeebb9891?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+    background-color: #2790b0;
     color: #fff;
 }
 
@@ -20,9 +21,9 @@ header {
     right: 0;
     z-index: 1000;
     display: flex;
-    justify-content: space-between; /* Place the logo on the left and navigation on the right */
+    justify-content: space-between;
     align-items: center;
-    background-color: #FFFFFF;
+    background-color: transparent;
     padding: 30px 12%;
     transition: all 0.50s ease;
 }
@@ -35,8 +36,8 @@ header {
 
 
 .logo span {
-    color: #07f9a2;
-    font-size: 1.1rem;
+    color: #fff;
+    font-size: 1.4rem;
     font-weight: 600;
 }
 
@@ -45,7 +46,7 @@ header {
 }
 
 .navigationBar a {
-    color: #07f9a2;
+    color: #fff;
     font-size: 1.5rem;
     font-weight: 900;
     padding: 5px 0;
@@ -54,9 +55,71 @@ header {
 }
 
 .navigationBar a:hover {
-    color: #0a8967;
+    color: #00c176;
 }
 
 .navigationBar a.active {
-    color: #07f9a2;
+    color: #00c176;
+}
+
+.butt1,.butt2{
+    height: 40px;
+    width: 120px;
+    background-color: transparent;
+    color: white;
+    border: 3px solid;
+    border-radius: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    padding-top: 5px;
+    padding-right: 30px;
+    padding-bottom: 5px;
+    padding-left: 30px;
+}
+.butt2{
+    background-color:white;
+    color:#00986f;
+    font-size: 20px;
+    font-weight: bold;
+}
+.butt1:hover{
+    background-color:#00986f;
+    color:#fff;
+    font-size: 20px;
+}
+.butt2:hover{
+    opacity: 0.8;
+}
+
+.text-container{
+max-width: 600px;
+margin-top: 7%;
+margin-left: 50%;
+}
+.text-container h1{
+    font-size: 80px;
+    font-weight: 400;
+}
+.text-container a{
+    text-decoration: none;
+    background: #00986f;
+    padding: 14px 40px;
+    display: inline-block;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 30px;
+    border-radius: 30px;
+}
+
+.image-card{
+    width: 20%;
+    height: 20%;
+    display: flex;
+    float: right;
+    margin: 2% 10px 0px 0px;
+}
+.image-card img{
+    margin-left: 15%;
+    border: 2px solid white;
+
 }
