@@ -3,6 +3,7 @@ import sqlite3
 
 app = Flask(__name__)
 app.config['STATIC_FOLDER'] = 'static'
+app.secret_key = 'ASDA3D35ASD'
 
 
 def init_db():
@@ -45,6 +46,11 @@ def login():
         cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
         user = cursor.fetchone()
         conn.close()
+        if user:
+            flash('Login successful!', 'success')
+            return redirect(url_for('central'))
+        else:
+            flash('Login failed. Please check your credentials.', 'error')
 
 
 
