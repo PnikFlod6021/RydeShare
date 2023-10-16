@@ -1,4 +1,24 @@
-{% extends "layout.html" %}
-{% block content %}
-<h2>Welcome to the Home Page</h2>
-{% endblock %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage.css') }}">
+    <title>RydeShare</title>
+</head>
+<body>
+<header>
+        <a href = "#" class = "logo"><span>RydeShare</span>
+        </a>
+        <ul class = navigationBar>
+            <li><a href = "\" class = "active">Home</a></li>
+            <li><a href = "#">About</a></li>
+            <li><a href = "\login">Login</a></li>
+            <li><a href = "\register">Register</a><span></span></li>
+        </ul>
+    </header>
+
+</body>
+</html>
