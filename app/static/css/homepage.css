@@ -5,16 +5,13 @@
     font-family: 'Poppins', sans-serif;
     text-decoration: none;
     list-style: none;
-
 }
 
 body {
-    min-height: 100vh;
-    background-color: #2790b0;
-    color: #fff;
+    background-color: #274156;
 }
 
-header {
+.navbar {
     position: fixed;
     width: 100%;
     top: 0;
@@ -28,43 +25,37 @@ header {
     transition: all 0.50s ease;
 }
 
-.logo {
+.navbar-brand {
     display: flex;
     align-items: center;
 }
 
-
-
-.logo span {
+.navbar-brand span {
     color: #fff;
     font-size: 1.4rem;
     font-weight: 600;
 }
 
-.navigationBar {
-    display: flex;
-}
-
-.navigationBar a {
+.nav-link {
     color: #fff;
     font-size: 1.5rem;
     font-weight: 900;
     padding: 5px 0;
-    margin: 0px 30px;
+    margin: 0px 10px;
     transition: all 0.50s ease;
 }
 
-.navigationBar a:hover {
-    color: #00c176;
+.nav-link:hover {
+    color: #4CB963;
 }
 
-.navigationBar a.active {
-    color: #00c176;
+.nav-link.active.active.active {
+    color: #4CB963;
 }
 
-.butt1,.butt2{
+.login, .signup {
     height: 40px;
-    width: 120px;
+    width: 150px;
     background-color: transparent;
     color: white;
     border: 3px solid;
@@ -75,26 +66,30 @@ header {
     padding-right: 30px;
     padding-bottom: 5px;
     padding-left: 30px;
+
+    margin: 0 10px;
 }
-.butt2{
+.signup {
     background-color:white;
-    color:#00986f;
+    color:#4CB963;
     font-size: 20px;
     font-weight: bold;
 }
-.butt1:hover{
-    background-color:#00986f;
+
+.login:hover {
+    background-color:#4CB963;
     color:#fff;
     font-size: 20px;
 }
-.butt2:hover{
+.signup:hover
+{
     opacity: 0.8;
 }
 
 .text-container{
-max-width: 600px;
-margin-top: 7%;
-margin-left: 50%;
+    max-width: 600px;
+    margin-top: 7%;
+    margin-left: 50%;
 }
 .text-container h1{
     font-size: 80px;

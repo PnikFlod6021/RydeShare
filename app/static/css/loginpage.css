@@ -3,14 +3,6 @@
     background-color: #09c184;
 }
 
-* {
-    padding: 0;
-    margin: 0;
-    font-family: 'Outfit', sans-serif;
-    box-sizing: border-box;
-    text-decoration: none;
-}
-
 a {
     color: #31285C;
 }

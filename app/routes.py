@@ -9,22 +9,32 @@ def init_db():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
+    cursor.execute(""" CREATE TABLE IF NOT EXISTS users (
+                            id integer PRIMARY KEY,
+                            name text NOT NULL,
+                            begin_date text,
+                            end_date text
+                        ); """)
 
     cursor.execute("PRAGMA table_info(users)")
-    columns = [column[1] for column in cursor.fetchall()]
+    columns_user = [column[1] for column in cursor.fetchall()]
 
-    if 'first_name' not in columns:
+    if 'first_name' not in columns_user:
         cursor.execute("ALTER TABLE users ADD COLUMN first_name TEXT")
         cursor.execute("ALTER TABLE users ADD COLUMN last_name TEXT")
+
+
 
     conn.commit()
     conn.close()
 
 init_db()
 
+# our color palatte: https://coolors.co/061a40-f1f0ea-4cb963-1c6e8c-274156
+
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('index.html')
 
 @app.route('/central')
 def central():
