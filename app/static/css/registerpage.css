@@ -1,6 +1,6 @@
 ::selection {
     color: #0c5149;
-    background-color: #09c184;
+    background-color: #4CB963;
 }
 
 * {
@@ -22,8 +22,25 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: #0d192b;
+    background-color: #274156;
     padding-top: 20px;
+}
+
+body div.bg {
+    margin: none;
+    padding: none;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://images.unsplash.com/photo-1532330384785-f94c84352e91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2011&q=80');
+    background-size: cover !important;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    background-position: center center;
+    opacity: 20%;
+    position: fixed;
+    top: 0px;
+    z-index: -9000;
 }
 
 form {
@@ -37,7 +54,7 @@ form {
 .wrapper {
     width: 320px;
     min-height: 100px;
-    background-color: #FFFFFF;
+    background-color: #F1F0EA;
     border-radius: 5px;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
     padding: 30px;
@@ -48,7 +65,7 @@ form {
     height: 45px;
     border: none;
     padding: 10px;
-    background-color: #eeeeee;
+    background-color: #dddcd3;
     color: gray;
     outline: none;
     font-size: 15px;
@@ -57,17 +74,14 @@ form {
     border-radius: 5px;
 }
 
-.input-field:hover {
-}
-
 .heading {
-    color: #09c184;
+    color: #4CB963;
     margin-bottom: 20px;
     text-align: center;
 }
 
 label {
-    color: #AAA8BB;
+    color: #768579;
     font-weight: 400;
 }
 
@@ -76,7 +90,7 @@ button {
     height: 45px;
     border: none;
     color: #FFFFFF;
-    background-color: #09c184;
+    background-color: #4CB963;
     border-radius: 5px;
     font-size: 17px;
     font-weight: 500;
@@ -88,19 +102,21 @@ button {
 }
 
 button:hover {
-    background-color: #0a8967;
+    background-color: #4CB963;
 }
 
+.login {
+    margin-top: 20px;
+    text-align: center;
+    color: #6d7c70;
+}
 
+.login a {
+    text-decoration: none;
+    color: #061A40;
+    transition: color 0.3s;
+}
 
-
-
-
-
-
-
-
-
-
-
-
+.login a:hover {
+    color: #4CB963;
+}

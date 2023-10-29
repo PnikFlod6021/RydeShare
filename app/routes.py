@@ -5,10 +5,10 @@ app = Flask(__name__)
 app.config['STATIC_FOLDER'] = 'static'
 app.secret_key = 'ASDA3D35ASD'
 
-def init_db():
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
+conn = sqlite3.connect('database.db')
+cursor = conn.cursor()
 
+def init_db():
     cursor.execute(""" CREATE TABLE IF NOT EXISTS users (
                             id integer PRIMARY KEY,
                             name text NOT NULL,
@@ -22,11 +22,8 @@ def init_db():
     if 'first_name' not in columns_user:
         cursor.execute("ALTER TABLE users ADD COLUMN first_name TEXT")
         cursor.execute("ALTER TABLE users ADD COLUMN last_name TEXT")
-
-
-
-    conn.commit()
-    conn.close()
+    
+    conn.commit();
 
 init_db()
 
@@ -47,11 +44,10 @@ def register():
         password = request.form['password']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
+
         cursor.execute("INSERT INTO users (username, password, first_name, last_name) VALUES (?, ?, ?, ?)", (username, password, first_name, last_name))
         conn.commit()
-        conn.close()
+
         return redirect(url_for('central'))
     return render_template('register.html')
 
@@ -60,11 +56,16 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
+        
         cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
         user = cursor.fetchone()
+
+        
         conn.close()
+
         if user:
             flash('Login successful!', 'success')
             return redirect(url_for('central'))
@@ -74,3 +75,5 @@ def login():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+conn.close();

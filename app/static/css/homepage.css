@@ -20,10 +20,12 @@ body div.bg {
     width: 100%;
     height: 100%;
     background-image: url('https://images.unsplash.com/photo-1532330384785-f94c84352e91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2011&q=80');
-    opacity: 20%;
+    background-size: cover !important;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100% 100%;
+    background-position: center center;
+    opacity: 20%;
     position: fixed;
     top: 0px;
     z-index: -9000;
@@ -39,9 +41,9 @@ body div.bg {
     justify-content: space-between;
     align-items: center;
     background-color: transparent;
-    padding: 30px 12%;
+    backdrop-filter: blur(30px);
+    padding: 20px 12%;
     transition: all 0.50s ease;
-    backdrop-filter: blur(10px);
 }
 
 .navbar-brand {
@@ -51,13 +53,13 @@ body div.bg {
 
 .navbar-brand span {
     color: #fff;
-    font-size: 1.4rem;
+    font-size: 1.4em;
     font-weight: 600;
 }
 
 .nav-link {
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 900;
     padding: 5px 0;
     margin: 0px 10px;
@@ -72,49 +74,51 @@ body div.bg {
     color: #4CB963;
 }
 
-.login, .signup {
+.login,
+.signup {
     height: 40px;
     width: 150px;
     background-color: transparent;
     color: white;
     border: 3px solid;
-    border-radius: 20px;
+    border-radius: 500px;
     font-size: 20px;
     font-weight: bold;
-    padding-top: 5px;
+    padding-top: 2px;
     padding-right: 30px;
-    padding-bottom: 5px;
     padding-left: 30px;
-
     margin: 0 10px;
 }
+
 .signup {
-    background-color:white;
-    color:#4CB963;
+    background-color: #F1F0EA;
+    color: #4CB963;
     font-size: 20px;
     font-weight: bold;
 }
 
 .login:hover {
-    background-color:#4CB963;
-    color:#fff;
+    background-color: #4CB963;
+    color: #F1F0EA;
     font-size: 20px;
 }
-.signup:hover
-{
+
+.signup:hover {
     opacity: 0.8;
 }
 
-.text-container{
+.text-container {
     max-width: 600px;
     margin-top: 200px;
     margin-left: 50%;
 }
-.text-container h1{
+
+.text-container h1 {
     font-size: 80px;
     font-weight: 400;
 }
-.text-container a{
+
+.text-container a {
     text-decoration: none;
     background: #00986f;
     padding: 14px 40px;
