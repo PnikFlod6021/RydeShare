@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/loginpage.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock head %}
 
 {% block body %}
@@ -14,16 +14,17 @@
         </div>
 
         <form method="post" action="/login">
+            {{ form.hidden_tag() }}
             <div class="input-group">
-                <input type="text" name="username" class="input-field" placeholder="Username" required>
+                {{ form.username(class="input-field") }}
             </div>
 
             <div class="input-group">
-                <input type="password" name="password" class="input-field" placeholder="Password" required>
+                {{ form.password(class="input-field") }}
             </div>
 
             <div class="input-group">
-                <button type="submit">Login</button>
+                {{ form.submit(class="submit") }}
             </div>
         </form>
 

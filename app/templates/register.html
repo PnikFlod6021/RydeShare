@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registerpage.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/register.css') }}">
 {% endblock head %}
 
 {% block body %}
@@ -14,24 +14,25 @@
         </div>
 
         <form method="post" action="/register">
+            {{ form.hidden_tag() }}
             <div class="input-group">
-                <input type="text" name="first_name" class="input-field" placeholder="First Name" required>
+                {{ form.first_name(class="input-field") }}
             </div>
 
             <div class="input-group">
-                <input type="text" name="last_name" class="input-field" placeholder="Last Name" required>
+                {{ form.last_name(class="input-field") }}
             </div>
 
             <div class="input-group">
-                <input type="text" name="username" class="input-field" placeholder="Username" required>
+                {{ form.username(class="input-field") }}
             </div>
 
             <div class="input-group">
-                <input type="password" name="password" class="input-field" placeholder="Password" required>
+                {{ form.password(class="input-field") }}
             </div>
 
             <div class="input-group">
-                <button type="submit">Register</button>
+                {{ form.submit(class="submit") }}
             </div>
         </form>
         

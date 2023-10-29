@@ -79,7 +79,7 @@ label {
     font-weight: 400;
 }
 
-button {
+.submit {
     width: 100%;
     height: 45px;
     border: none;
@@ -88,14 +88,13 @@ button {
     border-radius: 5px;
     font-size: 17px;
     font-weight: 500;
-    padding: 20px;
     transition: 0.3s;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-button:hover {
+.submit:hover {
     background-color: #4CB963;
 }
 
