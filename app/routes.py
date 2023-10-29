@@ -5,10 +5,11 @@ app = Flask(__name__)
 app.config['STATIC_FOLDER'] = 'static'
 app.secret_key = 'ASDA3D35ASD'
 
-conn = sqlite3.connect('database.db')
-cursor = conn.cursor()
-
 def init_db():
+    
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
     cursor.execute(""" CREATE TABLE IF NOT EXISTS users (
                             id integer PRIMARY KEY,
                             name text NOT NULL,
@@ -39,6 +40,9 @@ def central():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -63,7 +67,7 @@ def login():
         cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
         user = cursor.fetchone()
 
-        
+
         conn.close()
 
         if user:
@@ -75,5 +79,3 @@ def login():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-conn.close();
