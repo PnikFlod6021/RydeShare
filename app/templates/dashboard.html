@@ -31,7 +31,23 @@
         <button>sus</button>
     </main>
 
-    <iframe src="https://calendar.google.com/calendar/embed?{{ calendar_url }}&ctz=America%2FChicago" style="border: 2px" width="800" height="600" frameborder="10" scrolling="no"></iframe>
+    {# <iframe src="https://calendar.google.com/calendar/embed?src={{ calendar_url }}&ctz=America%2FChicago" style="border: 2px" width="800" height="600" frameborder="10" scrolling="no"></iframe> #}
 
-    <script src="{{ url_for('static', filename='js/central.js') }}"></script>
+    <div id="calendar"></div>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                themeSystem: 'bootstrap5',
+                initialView: 'dayGridWeek',
+
+                googleCalendarApiKey: 'AIzaSyB_ZcDgOVTRqX8v6Ts4Dd-DKWmFtM7T2VA',
+                events: {
+                    googleCalendarId: '{{ calendar_url }}'
+                }
+            });
+            calendar.render();
+        });
+    </script>
 {% endblock body %}

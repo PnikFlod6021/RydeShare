@@ -3,6 +3,14 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
+import datetime as dt
+import os
+
+from google.auth.transport.requests import Request
+from google.oauth2.service_account import Credentials
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
 app = Flask(__name__)
 
 app.config['STATIC_FOLDER'] = 'static'
@@ -31,17 +39,21 @@ class User(db.Model, UserMixin):
     can_host = db.Column(db.Boolean(), default=True)
     community_id = db.Column(db.Integer, db.ForeignKey('community.id'), nullable=False)
     
+    def get_community_calendar_id(self):
+        return Community.query.filter_by(id=self.community_id).first().calendarId
+    
 class Community(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    addresses = db.relationship('User', backref='community', lazy=True)
-    url = db.Column(db.String(100), nullable=False, unique=True)
+    name = db.Column(db.String(100), nullable=False, unique=True)
+    calendarId = db.Column(db.String(100), nullable=True)
+    users = db.relationship('User', backref='community', lazy=True)
     
 # endregion
 
 # region forms #############
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, EmailField
 from wtforms.validators import InputRequired, Length, ValidationError
 
 
@@ -49,11 +61,14 @@ class RegisterForm(FlaskForm):
     first_name = StringField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "First Name"})
     last_name  = StringField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "Last Name"})
     
+    email = EmailField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "Email"})
+    
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
-
     password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
+    
+    community = StringField(validators=[InputRequired(), Length(min=4, max=100)], render_kw={"placeholder": "Community"}, id="community")
 
-    can_host = BooleanField(label="You can drive: ", default="unchecked")
+    can_host = BooleanField(label="You can drive: ", default="checked")
     
     submit = SubmitField('Register')
 
@@ -76,6 +91,67 @@ class LoginForm(FlaskForm):
         
 # endregion
 
+# region Google api ########
+
+SCOPES = ['https://www.googleapis.com/auth/calendar',
+          'https://www.googleapis.com/auth/calendar.readonly']
+
+cred = Credentials.from_service_account_file('service_account_cred.json', scopes=SCOPES)
+
+service = build('calendar', 'v3', credentials=cred)
+
+# Call the Calendar API
+now = dt.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+
+def create_calendar(community:Community):
+    new_calendar = service.calendars().insert(body={'summary':community.name}).execute()
+    
+    #make the calendar public
+    rules = {
+        "role": "reader",
+        "scope": {
+            "type": "default",
+        }
+    }
+    created_rule = service.acl().insert(calendarId=new_calendar['id'], body=rules).execute()
+    
+    # write it to the database
+    community.calendarId = new_calendar['id']
+    db.session.commit()
+    
+def create_event(community:Community, event_name:str, driver:User, location):
+    event = {
+        'summary': f'{event_name}: {driver.first_name} {driver.last_name}',
+        'description': '',
+        'start': {
+            'dateTime': '2015-05-28T09:00:00-07:00',
+            'timeZone': 'America/Los_Angeles',
+        },
+        'attendees': [
+            {'email': 'lpage@example.com'},
+        ],
+        'reminders': {
+            'useDefault': False,
+            'overrides': [
+                {'method': 'email', 'minutes': 24 * 60},
+                {'method': 'popup', 'minutes': 30},
+            ],
+        },
+        'visibility': 'public',
+        'privateCopy': False,
+        'locked': False,
+        'anyoneCanAddSelf': True,
+    }    
+    new_event = service.events().insert(calendarId=f'{community.calendarId}', body=event).execute()
+
+# events_result = service.events().list(calendarId='06a233e6f808f3713e70450a644351dc6a89d5114093bbc8cd9c1da2965709d6@group.calendar.google.com', timeMin=now,
+#                                         maxResults=10, singleEvents=True,
+#                                         orderBy='startTime').execute()
+# events = events_result.get('items', [])
+
+
+# endregion
+
 # color palatte: https://coolors.co/061a40-f1f0ea-4cb963-1c6e8c-274156
 
 
@@ -89,15 +165,25 @@ def home():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
+    communities = Community.query.all()
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password, first_name=form.first_name.data, last_name=form.last_name.data, can_host=form.can_host.data)
+        
+        community = Community.query.filter_by(name=form.community.data).first()
+        
+        if not community:
+            community = Community(name=form.community.data)
+            db.session.add(community)
+            create_calendar(community)
+        
+        new_user = User(username=form.username.data, password=hashed_password, first_name=form.first_name.data, last_name=form.last_name.data, can_host=form.can_host.data, community_id=community.id)
         db.session.add(new_user)
         db.session.commit()
+        
         return redirect(url_for('login'))
     
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, communities=communities)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -121,7 +207,9 @@ def logout():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', calendar_url="src=06a233e6f808f3713e70450a644351dc6a89d5114093bbc8cd9c1da2965709d6%40group.calendar.google.com")
+    cal_id = current_user.get_community_calendar_id()
+    cal_url = f"{cal_id}%40group.calendar.google.com"
+    return render_template('dashboard.html', calendar_url=cal_url)
 
 @app.route('/profile')
 @login_required
