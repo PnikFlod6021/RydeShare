@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/central.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard.css') }}">
 
-    <title>Central</title>
+    <title>Dashboard</title>
 {% endblock head %}
 
 {% block body %}
@@ -18,7 +18,8 @@
                     <li class="nav-item"><a href = "\" class="nav-link active">Home</a></li>
                 </ul>
                 <div class="d-flex">
-                    <a href="/login" class="btn login">Profile</a>
+                    <a href="{{url_for('profile')}}" class="nav-item nav-link">Profile</a>
+                    <a href="{{url_for('logout')}}" class="btn logout">Log Out</a>
                 </div>
             </div>
         </nav>
@@ -30,7 +31,7 @@
         <button>sus</button>
     </main>
 
-    <iframe src="https://calendar.google.com/calendar/embed?src=06a233e6f808f3713e70450a644351dc6a89d5114093bbc8cd9c1da2965709d6%40group.calendar.google.com&ctz=America%2FChicago" style="border: 0" width="800" height="600" frameborder="10" scrolling="no"></iframe>
+    <iframe src="https://calendar.google.com/calendar/embed?{{ calendar_url }}&ctz=America%2FChicago" style="border: 2px" width="800" height="600" frameborder="10" scrolling="no"></iframe>
 
     <script src="{{ url_for('static', filename='js/central.js') }}"></script>
 {% endblock body %}

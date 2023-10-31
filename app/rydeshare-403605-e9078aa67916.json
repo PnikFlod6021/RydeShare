@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "rydeshare-403605",
+  "private_key_id": "e9078aa6791602100d8e76b69234ffeb6e268d7f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCtUxEsMGMdPUhv\nx/HmAqEMQHrwyWlcwPg46jL/PEh54Tkj4FtudpAsZcIFtNI7O4OAXGm2K8hdUXda\ncQYVEssUQQf/nJKx8iRQQXHdNx2tCr03kfjgYpsB0BkFEKYQ3BluryNtv1b3sukq\nMkvGawYWFib7eeOCBHjcWXrU9nu5CQg8Qb3N0LXciVUq1pEEDZOiyiTBRv1JplTf\nqQoU/i7p8Dv/fBlfCW7nLtS6oMuZWWjb+76vOCxjAWqX6xttJzOrjuHYVyPrjyQM\nIPBHmajgiSkqM9Ln9eiqzWB5ljeP49HssWIXGch1I6kNx8FAFEdYPJ74vFl/skx0\nDR8zRT6LAgMBAAECggEAGkrHCJqAdn+E3PwKLFeKwZaIb71F392f6dZRDRnCbsal\nCdWvWPbgUPPQtlfjKjwRayfZm1pR5yIEBnKttwWmS7i/s103fYnbS1daI/IH7Od7\no5HfnH4owGImYXfQkS8qJnmn2K6VTTbVGuMNTpiOkEwk9rHbOq5d/SMPuH15cCx4\nJBhfL+M9NXc2NoR3Kz9Q5T5RQ/P4QCMwnu50zTffHYmgVdjW4EH0XRuMDpK1pLis\nx3zPBiZcOW/3ik50e3/CuGCIceBrVdfipoLfv99bCXAcQAFq4GIX6ymGpgOsp+Tf\nM809mqDwx+kblx/QbLxceQq0V14wW2DXs1TqcPq5UQKBgQDZg4OL2IMhYGukTl4P\nnAodDVRhkueybA5te1TxXa8tX+RpbnKSEwndDaDPq12FCaWmOwdexgRQZtG2XtFb\n994ngTAX/zv/7TN8HS27FmvsC9OJnwTKDETnMGOecp2KIYGACXfqwjDHVkHYKfBJ\nGHUkdLkZWJYiH+pLPOgQX3OWsQKBgQDL/fXZD3EdCQM9h/PYpNzYsTa2NW9Kjcfi\nL+k8/oR+j5oi/9Z1kKdletigxUmHB6P2VPMFvwNceR+fkGHrY9H1QbuCG+6z0Sj0\nAOJ9KKcJ0VhgFAf8nm5yCl+d9mEx51I8chp2/McHWyrOX5NyoUXuQcT4YabVwHGs\ndy8A5iYv+wKBgF2k4CJ58WKSN2WCk75WqIf/cB+d9oB7Qu7hlR1g/wUi7pxxf4Pi\nDHIN5vjhRx76m0VoznCAAeV3jrvcMHhOy2bomIMMUJGLVooNqd2M9qOmJ8ltG8u8\n4oFB9PGHWMnaSP2NlgIM3qFDQo/E5n0huXUbh4EhAWnpoZ4It8Qsw//RAoGAcYFD\n9J1FATTsmqY1JozFXcVtfgFJhaBSYibqjsfIDWv2Bhd4yz3MBwlN1FcyTHIR55Tp\nDH92bVPwJqb99S47u03x+bl1HpT5RpvfamjeWPYlSICc2RGGvunKvmhDOLNP7NZI\np4CLdipiLSa9MoFOGf56jQI5BKLqHV7LxqJJCVUCgYBMEq9vGcbHl+w/PmPLLGMI\nxaZFpKcSX0E5Ut7l3pHy5rRTyQ9hZ/p0w44mMGppq80Lpqil9iw8W7aGGykysPJe\nixI/dF9M+THEdM/QWyOTjHVJLrz8MzRLdyzBbE3tm4PUlfn0nnCO0/L+9uWnPLmq\nmd4LA4llRRgn1ubc25Sedg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "rydeshare@rydeshare-403605.iam.gserviceaccount.com",
+  "client_id": "104465511354808447521",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/rydeshare%40rydeshare-403605.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
