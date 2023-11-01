@@ -61,7 +61,7 @@ class RegisterForm(FlaskForm):
     first_name = StringField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "First Name"})
     last_name  = StringField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "Last Name"})
     
-    email = EmailField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "Email"})
+    email = EmailField(validators=[InputRequired(), Length(min=1, max=100)], render_kw={"placeholder": "Email"})
     
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
@@ -103,21 +103,21 @@ service = build('calendar', 'v3', credentials=cred)
 # Call the Calendar API
 now = dt.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
 
-def create_calendar(community:Community):
-    #make the calendar public
-    rules = {
-        "role": "owner",
-        "scope": {
-            "type": "default"
-        }
-    }
-    created_rule = service.acl().insert(calendarId=new_calendar['id'], body=rules).execute()
-    
+def create_calendar(community:Community):    
     new_calendar = service.calendars().insert(body={'summary':community.name}).execute()
     
     # write it to the database
     community.calendarId = new_calendar['id']
     db.session.commit()
+    
+    #make the calendar public
+    rules = {
+        "role": "reader",
+        "scope": {
+            "type": "default"
+        }
+    }
+    created_rule = service.acl().insert(calendarId=new_calendar['id'], body=rules).execute()
     
 def create_event(comm:Community, event_name:str, driver:User, location):
     event = {
