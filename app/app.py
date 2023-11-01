@@ -53,7 +53,7 @@ class Community(db.Model):
 # region forms #############
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, EmailField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, EmailField, SelectField
 from wtforms.validators import InputRequired, Length, ValidationError
 
 
@@ -88,6 +88,25 @@ class LoginForm(FlaskForm):
                             InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
 
     submit = SubmitField('Login')
+
+
+class RequestCarpoolForm(FlaskForm):
+    def __init__(self, cur_user):
+        FlaskForm.__init__(self)
+        
+        drivers = User.query.filter_by(community_id=cur_user.community_id).all()
+        
+    community_members = [f'{d.first_name} {d.last_name}' for d in drivers]
+    
+    event_name = StringField(validators=[InputRequired(), Length(min=1, max=50)], render_kw={"placeholder": "Event Name"})
+        
+    driver = SelectField(validators=[InputRequired()], choices=self.community_members, render_kw={"placeholder": "Driver"})
+        
+    location = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Location"})
+
+    is_recurring = BooleanField(label="Weekly recurring: ", default="checked")
+        
+    submit = SubmitField('Register')
         
 # endregion
 
@@ -119,7 +138,7 @@ def create_calendar(community:Community):
     }
     created_rule = service.acl().insert(calendarId=new_calendar['id'], body=rules).execute()
     
-def create_event(comm:Community, event_name:str, driver:User, location):
+def create_event(comm:Community, event_name:str, driver:User, location, weekly_recurring:bool):
     event = {
         'summary': f'{event_name}: {driver.first_name} {driver.last_name}',
         'description': '',
@@ -214,11 +233,14 @@ def dashboard():
 @app.route('/request_carpool')
 @login_required
 def request():
-    comm_id = current_user.community_id
-    comm = Community.query.filter_by(id=comm_id).first()
-    create_event(comm, "Sussy", current_user, "")
+    form = RequestCarpoolForm(current_user)
     
-    return "sussy bussy"
+    if form.validate_on_submit():
+        comm_id = current_user.community_id
+        comm = Community.query.filter_by(id=comm_id).first()
+        create_event(comm, form.event_name.data, form.driver.data, form.location.data, form.is_recurring.data)
+    
+    return render_template('request_carpool.html', form=form)
 
 @app.route('/profile')
 @login_required

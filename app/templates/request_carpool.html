@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/request_carpool.css') }}">
+{% endblock head %}
+
+{% block body %}
+    <div class="bg">
+    </div>
+
+    <div class="wrapper">
+        <div class="heading">
+            <h2>Login</h2>
+        </div>
+
+        <form method="post" action="/login">
+            {{ form.hidden_tag() }}
+            {% for field in form %}
+                {% if field.type == "BooleanField" %}
+                    <div class="input-group">
+                        {{ field.label }} {{ field(class="input-field bool") }}
+                    </div>
+                {% elif field.type == "SelectField"%}
+                    <div class="input-group dropdown">
+                        {{ field(class="dropdown-toggle input-field", list="community_list", data_bs_toggle="dropdown") }}
+                    </div>
+                {% elif field.type == "SubmitField"%}
+                    <div class="input-group">
+                        {{ field(class="submit") }}
+                    </div>
+                {% else %}
+                    <div class="input-group">
+                        {{ field(class="input-field") }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </form>
+
+        <div class="create-account">
+            <p>Not a user? <a href="/register">Create an account</a></p>
+        </div>
+    </div>
+{% endblock body %}

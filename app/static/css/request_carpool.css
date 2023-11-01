@@ -1,0 +1,118 @@
+::selection {
+    color: #0c5149;
+    background-color: #09c184;
+}
+
+a {
+    color: #31285C;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #274156;
+    padding-top: 20px;
+}
+
+body div.bg {
+    margin: none;
+    padding: none;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://images.unsplash.com/photo-1532330384785-f94c84352e91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2011&q=80');
+    background-size: cover !important;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    background-position: center center;
+    opacity: 20%;
+    position: fixed;
+    top: 0px;
+    z-index: -9000;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.wrapper {
+    width: 320px;
+    min-height: 100px;
+    background-color: #F1F0EA;
+    border-radius: 5px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+}
+
+.input-field {
+    width: 100%;
+    height: 45px;
+    border: none;
+    padding: 10px;
+    background-color: #dddcd3;
+    color: gray;
+    outline: none;
+    font-size: 15px;
+    margin-bottom: 20px;
+    transition: 0.5s;
+    border-radius: 5px;
+}
+
+.input-field:hover {}
+
+.heading {
+    color: #4CB963;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label {
+    color: #768579;
+    font-weight: 400;
+}
+
+.submit {
+    width: 100%;
+    height: 45px;
+    border: none;
+    color: #F1F0EA;
+    background-color: #4CB963;
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: 500;
+    transition: 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.submit:hover {
+    background-color: #4CB963;
+}
+
+.create-account {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.create-account a {
+    text-decoration: none;
+    color: #061A40;
+    transition: color 0.3s;
+}
+
+.create-account a:hover {
+    color: #4CB963;
+}
+
+.create-account p {
+    color: #6d7c70;
+}
