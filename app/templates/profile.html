@@ -1,9 +1,25 @@
 {% extends "layout.html" %}
 
 {% block head %}
-
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile.css') }}">
 {% endblock head %}
-
 {% block body %}
-    <h1> sussy bussy </h1>
+    <form method="POST" action="/update_profile">
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" value="{{ current_user.first_name }}" required><br><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" value="{{ current_user.last_name }}" required><br><br>
+
+        <label for="username">Username:</label>
+        <input type="text" name="username" value="{{ current_user.username }}" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br><br>
+
+        <label for="community">Community:</label>
+        <input type="text" name="community" value="{{ current_user.community.name }}" required><br><br>
+
+        <input type="submit" value="Update Profile">
+    </form>
 {% endblock body %}
