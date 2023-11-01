@@ -3,14 +3,6 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
-import datetime as dt
-import os
-
-from google.auth.transport.requests import Request
-from google.oauth2.service_account import Credentials
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-
 app = Flask(__name__)
 
 app.config['STATIC_FOLDER'] = 'static'
@@ -53,7 +45,7 @@ class Community(db.Model):
 # region forms #############
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, EmailField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, EmailField, SelectField, TimeField, TimeField, DateField
 from wtforms.validators import InputRequired, Length, ValidationError
 
 
@@ -93,16 +85,15 @@ class LoginForm(FlaskForm):
 class RequestCarpoolForm(FlaskForm):
     def __init__(self, cur_user):
         FlaskForm.__init__(self)
-        
-        drivers = User.query.filter_by(community_id=cur_user.community_id).all()
-        
-    community_members = [f'{d.first_name} {d.last_name}' for d in drivers]
     
     event_name = StringField(validators=[InputRequired(), Length(min=1, max=50)], render_kw={"placeholder": "Event Name"})
         
-    driver = SelectField(validators=[InputRequired()], choices=self.community_members, render_kw={"placeholder": "Driver"})
+    driver = SelectField(validators=[InputRequired()], render_kw={"placeholder": "Driver"})
         
     location = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Location"})
+    
+    start_time = TimeField(validators=[InputRequired()], render_kw={"placeholder": "Start:Time"})
+    date = DateField(validators=[InputRequired()])
 
     is_recurring = BooleanField(label="Weekly recurring: ", default="checked")
         
@@ -112,17 +103,26 @@ class RequestCarpoolForm(FlaskForm):
 
 # region Google api ########
 
+import datetime as dt
+import os
+
+from google.auth.transport.requests import Request
+from google.oauth2.service_account import Credentials
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
 SCOPES = ['https://www.googleapis.com/auth/calendar',
-          'https://www.googleapis.com/auth/calendar.readonly']
+          'https://www.googleapis.com/auth/calendar.readonly'
+          
+          'https://www.googleapis.com/auth/chat.spaces',
+          'https://www.googleapis.com/auth/chat.import']
 
 cred = Credentials.from_service_account_file('service_account_cred.json', scopes=SCOPES)
 
 service = build('calendar', 'v3', credentials=cred)
+chat_space_creator_service = build('chat', 'v1', credentials=cred)
 
-# Call the Calendar API
-now = dt.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-
-def create_calendar(community:Community):    
+def create_calendar(community:Community): 
     new_calendar = service.calendars().insert(body={'summary':community.name}).execute()
     
     # write it to the database
@@ -137,19 +137,46 @@ def create_calendar(community:Community):
         }
     }
     created_rule = service.acl().insert(calendarId=new_calendar['id'], body=rules).execute()
+
+def create_chat_space(comm:Community):
+    new_space = chat_space_creator_service.spaces().create(
+        body={
+            'spaceType': "SPACE",
+            'displayName': f'{comm.name} Chat'
+        }
+    ).execute()
     
-def create_event(comm:Community, event_name:str, driver:User, location, weekly_recurring:bool):
+def add_user_to_chat_space(user:User):
+    new_user = chat_space_creator_service.spaces().members().create(
+        parent="space/",
+        body={
+            'member': {
+                'name': 'users/',
+                'type': 'HUMAN'
+            }
+            
+        }
+    )
+
+def create_event(comm:Community, event_name:str, driver:User, start_time, date, location, weekly_recurring:bool):
+    time = dt.datetime(date.year, date.month, date.day, start_time.hour, start_time.minute)
+    end_time = time + dt.timedelta(minutes=30)
+    print(time)
+    
     event = {
-        'summary': f'{event_name}: {driver.first_name} {driver.last_name}',
-        'description': '',
+        'summary': f'{event_name}: {driver.username}',
         'start': {
-            'dateTime': '2023-10-31T09:00:00-07:00',
-            'timeZone': 'America/Chicago',
+            'dateTime': time.isoformat(),
+            'timeZone': 'America/Chicago'
         },
         'end': {
-            'dateTime': '2023-10-31T17:00:00-07:00',
-            'timeZone': 'America/Chicago',
+            'dateTime': end_time.isoformat(),
+            'timeZone': 'America/Chicago'
         },
+        'recurrence': [
+            'RRULE:FREQ=WEEKLY'
+        ],
+        'location': location,
         'reminders': {
             'useDefault': False,
             'overrides': [
@@ -161,13 +188,12 @@ def create_event(comm:Community, event_name:str, driver:User, location, weekly_r
         'privateCopy': False,
         'locked': False,
         'anyoneCanAddSelf': True,
-    }    
+    }
+    if not weekly_recurring:
+        event["recurrence"] = []
+        
     new_event = service.events().insert(calendarId=f'{comm.calendarId}', body=event).execute()
     
-    events = service.events().get(calendarId=f'{comm.calendarId}', eventId=f"{new_event.get('id')}").execute()
-
-    print(events['summary'])
-
 # endregion
 
 # color palatte: https://coolors.co/061a40-f1f0ea-4cb963-1c6e8c-274156
@@ -207,6 +233,8 @@ def register():
 def login():
     form = LoginForm()
     
+    
+    
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
@@ -216,7 +244,7 @@ def login():
     
     return render_template('login.html', form=form)
 
-@app.route('/logout', methods=['GET', 'POST'])
+@app.route('/logout')
 @login_required
 def logout():
     logout_user()
@@ -230,16 +258,23 @@ def dashboard():
     print(cal_url)
     return render_template('dashboard.html', calendar_url=cal_url)
 
-@app.route('/request_carpool')
+@app.route('/request_carpool', methods=['GET', 'POST'])
 @login_required
-def request():
+def request_carpool():
     form = RequestCarpoolForm(current_user)
+    
+    drivers = User.query.filter_by(community_id=current_user.community_id).all()
+    community_members = [f'{d.username}' for d in drivers]
+    
+    form.driver.choices = community_members
     
     if form.validate_on_submit():
         comm_id = current_user.community_id
         comm = Community.query.filter_by(id=comm_id).first()
-        create_event(comm, form.event_name.data, form.driver.data, form.location.data, form.is_recurring.data)
-    
+        print(type(form.date.data))
+        create_event(comm, form.event_name.data, User.query.filter_by(username=form.driver.data).first(), form.start_time.data, form.date.data, form.location.data, form.is_recurring.data)
+        return redirect(url_for('home'))
+
     return render_template('request_carpool.html', form=form)
 
 @app.route('/profile')
@@ -251,3 +286,4 @@ def profile():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    

@@ -1,10 +1,29 @@
 ::selection {
     color: #0c5149;
-    background-color: #09c184;
+    background-color: #4CB963;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    box-sizing: border-box;
+    text-decoration: none;
 }
 
 a {
     color: #31285C;
+}
+
+p {
+    width: 100%;
+}
+
+.back,
+.back p,
+.back p a {
+    text-align: center;
+    width: 100%;
 }
 
 body {
@@ -66,8 +85,6 @@ form {
     border-radius: 5px;
 }
 
-.input-field:hover {}
-
 .heading {
     color: #4CB963;
     margin-bottom: 20px;
@@ -77,13 +94,19 @@ form {
 label {
     color: #768579;
     font-weight: 400;
+    line-height: 3rem;
+}
+
+.bool {
+    width: 1.5rem;
+    margin-left: 25% !important;
 }
 
 .submit {
     width: 100%;
     height: 45px;
     border: none;
-    color: #F1F0EA;
+    color: #FFFFFF;
     background-color: #4CB963;
     border-radius: 5px;
     font-size: 17px;
@@ -98,21 +121,18 @@ label {
     background-color: #4CB963;
 }
 
-.create-account {
+.login {
     margin-top: 20px;
     text-align: center;
+    color: #6d7c70;
 }
 
-.create-account a {
+.login a {
     text-decoration: none;
     color: #061A40;
     transition: color 0.3s;
 }
 
-.create-account a:hover {
+.login a:hover {
     color: #4CB963;
-}
-
-.create-account p {
-    color: #6d7c70;
 }

@@ -13,7 +13,7 @@
             <h2>Login</h2>
         </div>
 
-        <form method="post" action="/login">
+        <form method="post" action="/request_carpool">
             {{ form.hidden_tag() }}
             {% for field in form %}
                 {% if field.type == "BooleanField" %}
@@ -36,8 +36,8 @@
             {% endfor %}
         </form>
 
-        <div class="create-account">
-            <p>Not a user? <a href="/register">Create an account</a></p>
+        <div class="back">
+            <p><a href="/">Back to Dashboard</a></p>
         </div>
     </div>
 {% endblock body %}
