@@ -283,6 +283,37 @@ def profile():
     return render_template('profile.html')
 
 # from forms import * # import forms for our register and login pages
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html')
+
+
+@app.route('/update_profile', methods=['POST'])
+@login_required
+def update_profile():
+    user = current_user
+
+    user.first_name = request.form.get('first_name')
+    user.last_name = request.form.get('last_name')
+    user.username = request.form.get('username')
+
+    new_password = request.form.get('password')
+    if new_password:
+        user.password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+
+    new_community_name = request.form.get('community')
+    if new_community_name != user.community.name:
+        community = Community.query.filter_by(name=new_community_name).first()
+        if not community:
+            community = Community(name=new_community_name)
+            db.session.add(community)
+            create_calendar(community)
+        user.community = community
+
+    db.session.commit()
+
+    return redirect(url_for('profile'))
 
 if __name__ == '__main__':
     app.run(debug=True)
