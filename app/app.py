@@ -119,17 +119,18 @@ def create_calendar(community:Community):
     community.calendarId = new_calendar['id']
     db.session.commit()
     
-def create_event(community:Community, event_name:str, driver:User, location):
+def create_event(comm:Community, event_name:str, driver:User, location):
     event = {
         'summary': f'{event_name}: {driver.first_name} {driver.last_name}',
         'description': '',
         'start': {
-            'dateTime': '2015-05-28T09:00:00-07:00',
-            'timeZone': 'America/Los_Angeles',
+            'dateTime': '2023-10-31T09:00:00-07:00',
+            'timeZone': 'America/Chicago',
         },
-        'attendees': [
-            {'email': 'lpage@example.com'},
-        ],
+        'end': {
+            'dateTime': '2023-10-31T17:00:00-07:00',
+            'timeZone': 'America/Chicago',
+        },
         'reminders': {
             'useDefault': False,
             'overrides': [
@@ -142,13 +143,11 @@ def create_event(community:Community, event_name:str, driver:User, location):
         'locked': False,
         'anyoneCanAddSelf': True,
     }    
-    new_event = service.events().insert(calendarId=f'{community.calendarId}', body=event).execute()
+    new_event = service.events().insert(calendarId=f'{comm.calendarId}', body=event).execute()
+    
+    events = service.events().get(calendarId=f'{comm.calendarId}', eventId=f"{new_event.get('id')}").execute()
 
-# events_result = service.events().list(calendarId='06a233e6f808f3713e70450a644351dc6a89d5114093bbc8cd9c1da2965709d6@group.calendar.google.com', timeMin=now,
-#                                         maxResults=10, singleEvents=True,
-#                                         orderBy='startTime').execute()
-# events = events_result.get('items', [])
-
+    print(events['summary'])
 
 # endregion
 
@@ -208,8 +207,18 @@ def logout():
 @login_required
 def dashboard():
     cal_id = current_user.get_community_calendar_id()
-    cal_url = f"{cal_id}%40group.calendar.google.com"
+    cal_url = f"{cal_id[:64]}%40group.calendar.google.com"
+    print(cal_url)
     return render_template('dashboard.html', calendar_url=cal_url)
+
+@app.route('/request_carpool')
+@login_required
+def request():
+    comm_id = current_user.community_id
+    comm = Community.query.filter_by(id=comm_id).first()
+    create_event(comm, "Sussy", current_user, "")
+    
+    return "sussy bussy"
 
 @app.route('/profile')
 @login_required
