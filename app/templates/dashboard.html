@@ -31,23 +31,24 @@
         <button>sus</button>
     </main>
 
-    <iframe src="https://calendar.google.com/calendar/embed?src={{ calendar_url }}&ctz=America%2FChicago" style="border: 2px" width="800" height="600" frameborder="10" scrolling="no"></iframe>
-
+    <div class="calendar-container">
+        <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FChicago&mode=WEEK&showPrint=0&showTz=0&src=NTk4ODhkY2YxMTc2ZDI2OTA0NzUxNmNiMjRkMDQyYzgzZmUwNWIxZjZjOWY5Zjk5MDhhNGZhOGJiZDMxNTliMkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23E67C73" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+    </div>
     <div id="calendar"></div>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                themeSystem: 'bootstrap5',
-                initialView: 'dayGridWeek',
+<!--    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.js"></script>-->
+<!--    <script>-->
+<!--        document.addEventListener('DOMContentLoaded', function() {-->
+<!--            var calendarEl = document.getElementById('calendar');-->
+<!--            var calendar = new FullCalendar.Calendar(calendarEl, {-->
+<!--                themeSystem: 'bootstrap5',-->
+<!--                initialView: 'dayGridWeek',-->
 
-                googleCalendarApiKey: 'AIzaSyB_ZcDgOVTRqX8v6Ts4Dd-DKWmFtM7T2VA',
-                events: {
-                    googleCalendarId: '{{ calendar_url }}'
-                }
-            });
-            calendar.render();
-        });
-    </script>
+<!--                googleCalendarApiKey: 'AIzaSyB_ZcDgOVTRqX8v6Ts4Dd-DKWmFtM7T2VA',-->
+<!--                events: {-->
+<!--                    googleCalendarId: '{{ calendar_url }}'-->
+<!--                }-->
+<!--            });-->
+<!--            calendar.render();-->
+<!--        });-->
+<!--    </script>-->
 {% endblock body %}
