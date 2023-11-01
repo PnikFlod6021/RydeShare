@@ -112,17 +112,13 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 SCOPES = ['https://www.googleapis.com/auth/calendar',
-          'https://www.googleapis.com/auth/calendar.readonly'
-          
-          'https://www.googleapis.com/auth/chat.spaces',
-          'https://www.googleapis.com/auth/chat.import']
+          'https://www.googleapis.com/auth/calendar.readonly']
 
 cred = Credentials.from_service_account_file('service_account_cred.json', scopes=SCOPES)
 
 service = build('calendar', 'v3', credentials=cred)
-chat_space_creator_service = build('chat', 'v1', credentials=cred)
 
-def create_calendar(community:Community): 
+def create_calendar(community:Community):    
     new_calendar = service.calendars().insert(body={'summary':community.name}).execute()
     
     # write it to the database
@@ -137,27 +133,7 @@ def create_calendar(community:Community):
         }
     }
     created_rule = service.acl().insert(calendarId=new_calendar['id'], body=rules).execute()
-
-def create_chat_space(comm:Community):
-    new_space = chat_space_creator_service.spaces().create(
-        body={
-            'spaceType': "SPACE",
-            'displayName': f'{comm.name} Chat'
-        }
-    ).execute()
     
-def add_user_to_chat_space(user:User):
-    new_user = chat_space_creator_service.spaces().members().create(
-        parent="space/",
-        body={
-            'member': {
-                'name': 'users/',
-                'type': 'HUMAN'
-            }
-            
-        }
-    )
-
 def create_event(comm:Community, event_name:str, driver:User, start_time, date, location, weekly_recurring:bool):
     time = dt.datetime(date.year, date.month, date.day, start_time.hour, start_time.minute)
     end_time = time + dt.timedelta(minutes=30)
@@ -193,7 +169,7 @@ def create_event(comm:Community, event_name:str, driver:User, start_time, date, 
         event["recurrence"] = []
         
     new_event = service.events().insert(calendarId=f'{comm.calendarId}', body=event).execute()
-    
+
 # endregion
 
 # color palatte: https://coolors.co/061a40-f1f0ea-4cb963-1c6e8c-274156
@@ -232,8 +208,6 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    
-    
     
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -286,4 +260,3 @@ def profile():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
