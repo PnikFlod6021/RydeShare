@@ -104,16 +104,16 @@ service = build('calendar', 'v3', credentials=cred)
 now = dt.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
 
 def create_calendar(community:Community):
-    new_calendar = service.calendars().insert(body={'summary':community.name}).execute()
-    
     #make the calendar public
     rules = {
-        "role": "reader",
+        "role": "owner",
         "scope": {
-            "type": "default",
+            "type": "default"
         }
     }
     created_rule = service.acl().insert(calendarId=new_calendar['id'], body=rules).execute()
+    
+    new_calendar = service.calendars().insert(body={'summary':community.name}).execute()
     
     # write it to the database
     community.calendarId = new_calendar['id']
